@@ -1,0 +1,8 @@
+### Get all billboards
+GET http://localhost:3000/api/8bc08fdb-efac-4f1c-8612-151ada4a0c82/billboards
+
+### Get only billboard
+GET  http://localhost:3000/api/8bc08fdb-efac-4f1c-8612-151ada4a0c82/billboards/188247fa-ff06-4122-8642-88ace6abf016
+
+
+# 5:18 YT
