@@ -1,4 +1,5 @@
 import prismadb from '@/lib/prismadb'
+
 import { auth } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
 
@@ -9,9 +10,10 @@ export async function POST(
   try {
     const { userId } = auth()
     const body = await req.json()
+
     const { name, billboardId } = body
 
-    if (!userId) return new NextResponse('Unauthecated', { status: 401 })
+    if (!userId) return new NextResponse('Unautheticated', { status: 401 })
     if (!name) return new NextResponse('Label is required', { status: 400 })
     if (!billboardId)
       return new NextResponse('Billboard is required', { status: 400 })

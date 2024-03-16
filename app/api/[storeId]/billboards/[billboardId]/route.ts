@@ -25,11 +25,11 @@ export async function GET(
   }
 }
 
-export async function PUT(
+export async function PATCH(
   req: Request,
   { params }: { params: { storeId: string; billboardId: string } }
 ) {
-  // billboardId -> is the name of the folder containing this file: path.ts
+  // billboardId -> is the name of the folder containing this file: [billboardId]
   try {
     const { userId } = auth()
     const body = await req.json()

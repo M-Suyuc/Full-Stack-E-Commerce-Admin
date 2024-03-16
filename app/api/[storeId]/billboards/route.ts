@@ -11,7 +11,7 @@ export async function POST(
     const body = await req.json()
     const { label, imageUrl } = body
 
-    if (!userId) return new NextResponse('Unauthecated', { status: 401 })
+    if (!userId) return new NextResponse('Unautheticated', { status: 401 })
     if (!label) return new NextResponse('Label is required', { status: 400 })
     if (!imageUrl)
       return new NextResponse('imageUrl is required', { status: 400 })
