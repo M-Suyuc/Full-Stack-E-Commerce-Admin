@@ -20,7 +20,7 @@ const CategoriesPage = async ({ params }: { params: { storeId: string } }) => {
   const formattedCategories: CategoryColumn[] = categories.map((item) => ({
     id: item.id,
     name: item.name,
-    billboardLabel: item.billboard.label,
+    billboardLabel: item.billboard.label, // podemos acceder a los campos del model billboard por el include de arriba  billboard: true
     createdAt: format(item.createdAt, 'MMMM do, yyyy')
   }))
 

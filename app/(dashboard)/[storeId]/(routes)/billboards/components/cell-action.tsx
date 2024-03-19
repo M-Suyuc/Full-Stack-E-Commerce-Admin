@@ -16,7 +16,7 @@ import {
 import { AlertModal } from '@/components/modals/alert-modal'
 
 import { BillboardColumn } from './columns'
-import { helpHttp } from '@/lib/helpHttp'
+import axios from 'axios'
 
 interface CellActionProps {
   data: BillboardColumn
@@ -27,21 +27,21 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const params = useParams()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const api = helpHttp()
 
-  const onConfirm = async () => {
+  const onDelete = async () => {
     try {
       setLoading(true)
-      await api.del(`/api/${params.storeId}/billboards/${data.id}`)
-      toast.success('Billboard deleted.')
+      await axios.delete(`/api/${params.storeId}/billboards/${data.id}`)
+
       router.refresh()
-    } catch (error) {
+      toast.success('Billboard deleted.')
+    } catch (error: any) {
       toast.error(
         'Make sure you removed all categories using this billboard first.'
       )
     } finally {
-      setOpen(false)
       setLoading(false)
+      setOpen(false)
     }
   }
 
@@ -55,7 +55,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        onConfirm={onConfirm}
+        onConfirm={onDelete}
         loading={loading}
       />
       <DropdownMenu>
@@ -67,17 +67,20 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end'>
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
           <DropdownMenuItem onClick={() => onCopy(data.id)}>
             <Copy className='mr-2 h-4 w-4' /> Copy Id
           </DropdownMenuItem>
+
           <DropdownMenuItem
             onClick={
               () => router.push(`/${params.storeId}/billboards/${data.id}`)
-              // sends itto the component BillboardPage and sends it to the file billboard-form.tsx
+              // sends into the component BillboardPage.tsx and sends it to the file billboard-form.tsx
             }
           >
             <Edit className='mr-2 h-4 w-4' /> Update
           </DropdownMenuItem>
+
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash className='mr-2 h-4 w-4' /> Delete
           </DropdownMenuItem>

@@ -15,29 +15,29 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { AlertModal } from '@/components/modals/alert-modal'
 
-import { CategoryColumn } from './columns'
-import axios from 'axios'
+import { helpHttp } from '@/lib/helpHttp'
+import { SizeColumn } from './columns'
 
 interface CellActionProps {
-  data: CategoryColumn
+  data: SizeColumn
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter()
   const params = useParams()
+
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
+  const api = helpHttp()
 
   const onConfirm = async () => {
     try {
       setLoading(true)
-      await axios.delete(`/api/${params.storeId}/categories/${data.id}`)
+      await api.del(`/api/${params.storeId}/sizes/${data.id}`)
       router.refresh()
-      toast.success('Category deleted.')
+      toast.success('Size deleted.')
     } catch (error) {
-      toast.error(
-        'Make sure you removed all products using this category first.'
-      )
+      toast.error('Make sure you removed all products using this size first.')
     } finally {
       setOpen(false)
       setLoading(false)
@@ -46,7 +46,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id)
-    toast.success('Category ID copied to clipboard.')
+    toast.success('Size ID copied to clipboard.')
   }
 
   return (
@@ -71,8 +71,8 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={
-              () => router.push(`/${params.storeId}/categories/${data.id}`)
-              // sends itto the component BillboardPage and sends it to the file billboard-form.tsx
+              () => router.push(`/${params.storeId}/sizes/${data.id}`)
+              // sends itto the component SizePage and sends it to the file size-form.tsx
             }
           >
             <Edit className='mr-2 h-4 w-4' /> Update

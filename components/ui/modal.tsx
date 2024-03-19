@@ -36,7 +36,7 @@ export default function Modal({
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        {children}
+        <div>{children}</div>
       </DialogContent>
     </Dialog>
   )

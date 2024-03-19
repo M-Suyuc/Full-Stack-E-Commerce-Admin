@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { z } from 'zod'
 import toast from 'react-hot-toast'
+import axios from 'axios'
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -19,7 +20,6 @@ import {
 } from '../ui/form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
-import { Options, helpHttp } from '@/lib/helpHttp'
 
 const formSchema = z.object({
   name: z.string().min(1).trim()
@@ -27,7 +27,6 @@ const formSchema = z.object({
 
 export const StoreModal = () => {
   const [loading, setLoading] = useState(false)
-  let api = helpHttp()
 
   const isOpen = useStoreModal((state) => state.isOpen)
   const onClose = useStoreModal((state) => state.onClose)
@@ -42,18 +41,9 @@ export const StoreModal = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setLoading(true)
-
-      let options: Options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: values
-      }
-
-      const res = await api.post('/api/stores', options)
+      const response = await axios.post('/api/stores', values)
       toast.success('Store created')
-      window.location.assign(`/${res.id}`) // window.location.assign(arg) -> refesh the page and add params add in the function assing(----)
+      window.location.assign(`/${response.data.id}`) // window.location.assign(arg) -> refesh the page and add params add in the function assing(----)
     } catch (error) {
       console.log(error)
       toast.error('Something went wrong')
@@ -69,36 +59,38 @@ export const StoreModal = () => {
       isOpen={isOpen}
       onClose={onClose}
     >
-      <div className='space-y-4 py-2 pb-6'>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              control={form.control}
-              name='name'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder='E-commerce'
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className='pt-6 space-x-2 flex items-center justify-end w-full'>
-              <Button disabled={loading} variant='outline' onClick={onClose}>
-                Cancel
-              </Button>
-              <Button disabled={loading} type='submit'>
-                Continue
-              </Button>
-            </div>
-          </form>
-        </Form>
+      <div>
+        <div className='space-y-4 py-2 pb-6'>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                control={form.control}
+                name='name'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={loading}
+                        placeholder='E-commerce'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className='pt-6 space-x-2 flex items-center justify-end w-full'>
+                <Button disabled={loading} variant='outline' onClick={onClose}>
+                  Cancel
+                </Button>
+                <Button disabled={loading} type='submit'>
+                  Continue
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </div>
       </div>
     </Modal>
   )

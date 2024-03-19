@@ -12,13 +12,17 @@ export function MainNav({
   // console.log({ props })
 
   const pathname = usePathname()
-  // console.log({ pathname })
+  // ---------Lado del cliente---------
+  // console.log({ pathname }) // leee el nombre de la ruta URL,actual ej:
+  //  http://localhost:3000/8bc08fdb-efac-4f1c-8612-151ada4a0c82/ffff
+  // pathname---->  /8bc08fdb-efac-4f1c-8612-151ada4a0c82/ffff
+
   const params = useParams()
   // console.log({ params })
 
   const routes = [
     {
-      href: `/${params.storeId}`,
+      href: `/${params.storeId}`, // params.storeId: viene de donde se esta usando el navbar.tsx (que es en (dashboard)/[storeId]/layout.tsx)
       label: 'Overview',
       active: pathname === `/${params.storeId}`
     },

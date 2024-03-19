@@ -22,8 +22,6 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { Heading } from '@/components/ui/heading'
 import { AlertModal } from '@/components/modals/alert-modal'
-import { ImageUpload } from '@/components/ui/image-upload'
-import { Options, helpHttp } from '@/lib/helpHttp'
 import {
   Select,
   SelectContent,
@@ -31,6 +29,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import axios from 'axios'
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -60,8 +59,6 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
   const toastMessage = initialData ? 'Category updated.' : 'Category created.'
   const action = initialData ? 'Save changes' : 'Create'
 
-  const api = helpHttp()
-
   const form = useForm<CategoryFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
@@ -74,22 +71,13 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
     console.log(data)
     try {
       setLoading(true)
-
-      let options: Options = {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: data
-      }
-
       if (initialData) {
-        await api.put(
+        await axios.patch(
           `/api/${params.storeId}/categories/${params.categoryId}`,
-          options
+          data
         )
       } else {
-        await api.post(`/api/${params.storeId}/categories`, options)
+        await axios.post(`/api/${params.storeId}/categories`, data)
       }
       router.refresh()
       router.push(`/${params.storeId}/categories`)
@@ -104,7 +92,9 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true)
-      await api.del(`/api/${params.storeId}/categories/${params.categoryId}`)
+      await axios.delete(
+        `/api/${params.storeId}/categories/${params.categoryId}`
+      )
       router.refresh()
       router.push(`/${params.storeId}/categories`)
       toast.success('Category deleted.')

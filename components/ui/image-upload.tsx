@@ -30,7 +30,9 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     onChange(result.info.secure_url)
   }
 
-  if (!isMounted) null
+  if (!isMounted) {
+    return null
+  }
 
   console.log(isMounted)
 
@@ -62,7 +64,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
           </div>
         ))}
       </div>
-      <CldUploadWidget uploadPreset='zyrhbgq8' onUpload={onUpload}>
+      <CldUploadWidget uploadPreset='zyrhbgq8' onSuccess={onUpload}>
         {({ open }) => {
           return (
             <Button

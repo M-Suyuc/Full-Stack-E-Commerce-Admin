@@ -23,7 +23,7 @@ import { Separator } from '@/components/ui/separator'
 import { Heading } from '@/components/ui/heading'
 import { AlertModal } from '@/components/modals/alert-modal'
 import { ImageUpload } from '@/components/ui/image-upload'
-import { Options, helpHttp } from '@/lib/helpHttp'
+import axios from 'axios'
 
 const formSchema = z.object({
   label: z.string().min(1),
@@ -41,7 +41,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
 }) => {
   const params = useParams()
   const router = useRouter()
-  console.log(params)
+  // console.log(params)
 
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -50,8 +50,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
   const description = initialData ? 'Edit a billboard.' : 'Add a new billboard'
   const toastMessage = initialData ? 'Billboard updated.' : 'Billboard created.'
   const action = initialData ? 'Save changes' : 'Create'
-
-  const api = helpHttp()
 
   const form = useForm<BillboardFormValues>({
     resolver: zodResolver(formSchema),
@@ -62,26 +60,18 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
   })
 
   const onSubmit = async (data: BillboardFormValues) => {
-    console.log(data)
+    // console.log(data)
     try {
       setLoading(true)
-
-      let options: Options = {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: data
-      }
-
       if (initialData) {
-        await api.put(
+        await axios.patch(
           `/api/${params.storeId}/billboards/${params.billboardId}`,
-          options
+          data
         )
       } else {
-        await api.post(`/api/${params.storeId}/billboards`, options)
+        await axios.post(`/api/${params.storeId}/billboards`, data)
       }
+
       router.refresh()
       router.push(`/${params.storeId}/billboards`)
       toast.success(toastMessage)
@@ -95,7 +85,10 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true)
-      await api.del(`/api/${params.storeId}/billboards/${params.billboardId}`)
+      await axios.delete(
+        `/api/${params.storeId}/billboards/${params.billboardId}`
+      )
+
       router.refresh()
       router.push(`/${params.storeId}/billboards`)
       toast.success('Billboard deleted.')
@@ -138,6 +131,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
           onSubmit={form.handleSubmit(onSubmit)}
           className='space-y-8 w-full'
         >
+          {/*  */}
           <FormField
             control={form.control}
             name='imageUrl'
@@ -149,7 +143,10 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
                   <ImageUpload
                     value={field.value ? [field.value] : []}
                     disabled={loading}
-                    onChange={(url) => field.onChange(url)}
+                    onChange={(url) => {
+                      // console.log(url) // https://res.cloudinary.com/doizvkllr/image/upload/v1710445298/xdyhoxlzjuiskwayrijt.png
+                      return field.onChange(url)
+                    }}
                     onRemove={() => field.onChange('')}
                   />
                 </FormControl>
@@ -157,6 +154,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
               </FormItem>
             )}
           />
+
           <div className='md:grid md:grid-cols-3 gap-8'>
             <FormField
               control={form.control}

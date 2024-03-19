@@ -64,7 +64,7 @@ export async function DELETE(
   }
 }
 
-export async function PATCH(
+export async function PUT(
   req: Request,
   { params }: { params: { sizeId: string; storeId: string } }
 ) {
