@@ -77,9 +77,7 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
         await api.post(`/api/${params.storeId}/sizes`, options)
       }
       router.refresh()
-      setTimeout(() => {
-        router.push(`/${params.storeId}/sizes`)
-      }, 1000)
+      router.push(`/${params.storeId}/sizes`)
       toast.success(toastMessage)
     } catch (error: any) {
       toast.error('Something went wrong.')
