@@ -83,9 +83,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
         await api.post(`/api/${params.storeId}/colors`, options)
       }
       router.refresh()
-      setTimeout(() => {
-        router.push(`/${params.storeId}/colors`)
-      }, 1000)
+      router.push(`/${params.storeId}/colors`)
       toast.success(toastMessage)
     } catch (error) {
       toast.error('Something went wrong.')
