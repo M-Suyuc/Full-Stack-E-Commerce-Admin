@@ -19,6 +19,7 @@ model Store{
   sizes         Size[]       @relation("StoreToSize")
   colors        Color[]      @relation("StoreToColor")
   products      Product[]    @relation("StoreToProduct")
+  orders        Order[]    @relation("StoreToOrder")
 }
 
 // for connect a model it must have the same name ----> "StoreToBillboard".
@@ -73,7 +74,7 @@ model Product {
   colorId     String    // Foreign Key to Color
   color       Color     @relation(fields: [colorId], references: [id])
   images      Image[]   // Relation to Image model
-  // orderItems  OrderItem[]   // Relation to Order model
+  orderItems  OrderItem[]   // Relation to Order model
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
@@ -83,31 +84,31 @@ model Product {
   @@index([colorId])
 }
 
-// model Order {
-//   id        String    @id @default(uuid())
-//   storeId     String    // Foreign Key to Store
-//   store       Store     @relation("StoreToOrder", fields: [storeId], references: [id])
-//   orderItems OrderItem[] // Relation to OrderItem model
-//   isPaid     Boolean   @default(false)
-//   phone      String    @default("")
-//   address    String    @default("")
-//   createdAt DateTime  @default(now())
-//   updatedAt DateTime  @updatedAt
+model Order {
+  id        String    @id @default(uuid())
+  storeId     String    // Foreign Key to Store
+  store       Store     @relation("StoreToOrder", fields: [storeId], references: [id])
+  orderItems OrderItem[] // Relation to OrderItem model
+  isPaid     Boolean   @default(false)
+  phone      String    @default("")
+  address    String    @default("")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
-//   @@index([storeId])
-// }
+  @@index([storeId])
+}
 
-// // Intermediary for a many-to-many relationship
-// model OrderItem {
-//   id        String  @id @default(uuid())
-//   orderId   String  // Foreign Key to Order
-//   order     Order   @relation(fields: [orderId], references: [id])
-//   productId String  // Foreign Key to Product
-//   product   Product @relation(fields: [productId], references: [id])
+// Intermediary for a many-to-many relationship
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String  // Foreign Key to Order
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String  // Foreign Key to Product
+  product   Product @relation(fields: [productId], references: [id])
 
-//   @@index([orderId])
-//   @@index([productId])
-// }
+  @@index([orderId])
+  @@index([productId])
+}
 
 model Size {
   id          String    @id @default(uuid())
