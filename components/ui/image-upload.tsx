@@ -54,18 +54,18 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ disabled }) => {
               </Button>
             </div>
             <Image
+              fill
               className='object-cover'
               alt='Image'
               src={url}
-              width={300}
-              height={300}
+              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
             />
           </div>
         ))}
       </div>
 
       <CldUploadWidget
-        uploadPreset='xsddet3a'
+        uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
         options={{ maxFiles: 5, multiple: true }}
         onSuccess={(result) => onUpload(result)}
       >
