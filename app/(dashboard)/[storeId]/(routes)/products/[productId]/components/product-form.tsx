@@ -31,8 +31,8 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { Checkbox } from '@/components/ui/checkbox'
 import ImageUpload from '@/components/ui/image-upload'
+import { Checkbox } from '@/components/ui/checkbox'
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -167,17 +167,16 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                 <FormLabel>Images</FormLabel>
                 <FormControl>
                   <ImageUpload
+                    value={field.value.map((image) => image.url)}
                     disabled={loading}
-                    // value={field.value.map((image) => image.url)}
-                    // disabled={loading}
-                    // onChange={(url) =>
-                    //   field.onChange([...field.value, { url }])
-                    // }
-                    // onRemove={(url) =>
-                    //   field.onChange([
-                    //     ...field.value.filter((current) => current.url !== url)
-                    //   ])
-                    // }
+                    onChange={(url) =>
+                      field.onChange([...field.value, { url }])
+                    }
+                    onRemove={(url) =>
+                      field.onChange([
+                        ...field.value.filter((current) => current.url !== url)
+                      ])
+                    }
                   />
                 </FormControl>
                 <FormMessage />

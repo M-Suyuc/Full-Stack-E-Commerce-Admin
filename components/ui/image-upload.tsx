@@ -9,26 +9,25 @@ import { ImagePlus, Trash } from 'lucide-react'
 
 interface ImageUploadProps {
   disabled?: boolean
+  onChange: (value: string) => void
+  onRemove: (value: string) => void
+  value: string[]
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ disabled }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({
+  disabled,
+  onChange,
+  onRemove,
+  value
+}) => {
   const [isMounted, setIsMounted] = useState(false)
-  const [urls, seturls] = useState<string[]>([])
 
   useEffect(() => {
     setIsMounted(true)
   }, [])
 
   const onUpload = (result: any) => {
-    const urlImage = result.info.secure_url
-    seturls((url) => {
-      url = [...url, urlImage]
-      return url
-    })
-  }
-
-  const onRemove = (url: string) => {
-    seturls(urls.filter((current) => current !== url))
+    onChange(result.info.secure_url)
   }
 
   if (!isMounted) {
@@ -38,7 +37,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ disabled }) => {
   return (
     <div>
       <div className='mb-4 flex items-center gap-4'>
-        {urls.map((url) => (
+        {value.map((url) => (
           <div
             key={url}
             className='relative w-[200px] h-[200px] rounded-md overflow-hidden'
@@ -65,9 +64,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ disabled }) => {
       </div>
 
       <CldUploadWidget
+        onUpload={onUpload}
         uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
         options={{ maxFiles: 5, multiple: true }}
-        onSuccess={(result) => onUpload(result)}
+        // onSuccess={(result) => onUpload(result)}
       >
         {({ open }) => {
           return (
