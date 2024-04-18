@@ -5,7 +5,7 @@ import StoreSwitcher from './store-switcher'
 import { MainNav } from './main-navbar'
 import { ThemeToggle } from './theme-toggle'
 
-const Navbar = async () => {
+export const Navbar = async () => {
   const { userId } = auth()
 
   if (!userId) {
@@ -31,5 +31,3 @@ const Navbar = async () => {
     </div>
   )
 }
-
-export default Navbar
