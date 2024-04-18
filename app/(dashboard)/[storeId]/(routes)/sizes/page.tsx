@@ -7,7 +7,9 @@ import { SizeClient } from './components/client'
 const SizesPage = async ({ params }: { params: { storeId: string } }) => {
   const sizes = await prismadb.size.findMany({
     where: {
+      // storeId es un campo del modelo  Size
       storeId: params.storeId
+      // comprueba si storeId es gual al storeId que viene en los params
     },
     orderBy: {
       createdAt: 'desc'

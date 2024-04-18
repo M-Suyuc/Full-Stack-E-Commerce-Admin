@@ -38,7 +38,9 @@ interface SizeFormProps {
 export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
   const params = useParams()
   const router = useRouter()
-  console.log(params)
+  // console.log(params) 👇🏻
+  // sizeId: "new"
+  // storeId: "81a4b907-4a7b-4380-91e3-bf49960516a6"
 
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
