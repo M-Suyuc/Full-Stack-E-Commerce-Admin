@@ -3,7 +3,7 @@ import { UserButton, auth } from '@clerk/nextjs'
 import { MainNav } from './main-nav'
 import { redirect } from 'next/navigation'
 import prismadb from '@/lib/prismadb'
-import { ThemeToggle } from './theme-toggle'
+import { ThemeToggle } from './Theme-toggle'
 import StoreSwitcher from './store-switcher'
 
 export const Navbar = async () => {
